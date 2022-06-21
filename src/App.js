@@ -1,19 +1,18 @@
 import "./App.css";
-import Header from "./components/Header";
-import Main from "./components/Main";
-import Payments from "./components/Payments";
-import Sidebar from "./components/Sidebar";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import AddProject from "./pages/AddProject";
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <div className="bodyContainer">
-        <Sidebar />
-        <Main />
-        <Payments />
+    <Router>
+      <div className="App">
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/add/projects" component={AddProject} />
+        </Switch>
       </div>
-    </div>
+    </Router>
   );
 }
 

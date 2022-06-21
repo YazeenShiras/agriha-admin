@@ -1,5 +1,6 @@
 import React from "react";
 import "./Main.css";
+import { Link } from "react-router-dom";
 
 const Main = () => {
   return (
@@ -36,20 +37,20 @@ const Main = () => {
         </div>
       </div>
       <div className="addContainer">
-        <div className="add">
+        <Link to="/add/client" className="add">
           <p>Add Client</p>
           <img
             src="https://cdn-icons-png.flaticon.com/512/1237/1237946.png"
             alt=""
           />
-        </div>
-        <div className="add">
+        </Link>
+        <Link to="/add/projects" className="add">
           <p>Add Project</p>
           <img
             src="https://cdn-icons-png.flaticon.com/512/1237/1237946.png"
             alt=""
           />
-        </div>
+        </Link>
       </div>
       <div className="latestActivityContainer">
         <h2>Latest Activity</h2>
