@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import "./AddProject.css";
+import axios from "axios";
 
 const AddProject = () => {
   const [requirements, setRequirements] = useState([]);
+  const [location, setLocation] = useState("");
+
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
 
   const addRequirements = () => {
     document.getElementById("plusIconContainer").style.display = "none";
@@ -15,6 +20,10 @@ const AddProject = () => {
     document.getElementById("inputFieldHidden").style.display = "none";
   };
 
+  const storeLocation = () => {
+    setLocation(document.getElementById("location").value);
+  };
+
   const storeValues = () => {
     const inputValue = document.getElementById("inputField").value;
     if (inputValue !== "") {
@@ -22,18 +31,36 @@ const AddProject = () => {
     }
   };
 
+  useEffect(() => {
+    async function getLocationDetails() {
+      const endpoint = `https://api.geoapify.com/v1/geocode/autocomplete?text=${location}%20&format=json&apiKey=41ff15ef6d914c4aa4d53d1c7c848744`;
+
+      await axios.get(endpoint).then((res) => {
+        const data = res.data;
+        console.log(data);
+        if (data.results) {
+          setLatitude(data.results[0].lat);
+          setLongitude(data.results[0].lon);
+        }
+      });
+    }
+
+    if (location.length > 2) {
+      getLocationDetails();
+    }
+  }, [location]);
+
   return (
     <div className="addProject">
       <Header />
       <div className="add__ProjectContainer">
         <div className="AddProjectsContainer">
-          <h1>Add Project</h1>
+          <h2>Add Project</h2>
           <div className="projectidContainer">
             <h3>
               Project ID : <span>ARC001</span>
             </h3>
           </div>
-          <h2>Project Description</h2>
           <div className="dropdown__container">
             <h3>Project Type : </h3>
             <div className="select__dropdowns">
@@ -53,18 +80,26 @@ const AddProject = () => {
           </div>
           <div className="total__area">
             <h3>Total Area : </h3>
-            <input type="number" />
+            <input type="text" />
           </div>
-          <div className="total__area">
+          <div className="total__area budget">
             <h3>Total budget : </h3>
             <input type="text" />
           </div>
           <div className="location">
             <h3>Project Location : </h3>
-            <input type="text" />
+            <input onChange={storeLocation} id="location" type="text" />
           </div>
         </div>
         <div className="requirementsContainer">
+          <div className="dateSection">
+            <h3>Initiated Date : </h3>
+            <input type="date" />
+          </div>
+          <div className="dateSection duedate">
+            <h3>Due Date : </h3>
+            <input type="date" />
+          </div>
           <div className="requirements">
             <h3>Space Requirements</h3>
             <div
